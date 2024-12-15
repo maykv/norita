@@ -1,0 +1,24 @@
+/* 전체 스타일링 */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+    color: #333;
+  }
+  
+  /* 가사 컨테이너 */
+  .lyrics-container {
+    position: relative;
+    text-align: center;
+    padding: 50px;
+  }
+  
+  /* 가사 스타일 */
+  .lyrics p {
+    font-size: 20px;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 0;
+    margin: 5px 0;
+  }
+  

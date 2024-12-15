@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSIT Storybook</title>
+    <style>
+        @font-face {
+            font-family: 'BookkMyungjo-Lt';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Lt.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+        body {
+            margin: 0;
+            font-family: 'BookkMyungjo-Lt', serif;
+            overflow-x: hidden;
+            background: #f9f6f1;
+        }
+
+        .page {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 20px;
+            text-align: center;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 1.2s ease, opacity 1.2s ease;
+        }
+
+        .page h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .page p {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .hidden {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.7;
+        }
+
+        .animation {
+            animation: fadeIn 2s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <!-- GSIT Story Pages -->
+    <section class="page hidden" id="begin">
+        <div class="background" style="background-image: url('https://example.com/image1.jpg');"></div>
+        <div>
+            <h2>BEGIN PAGE</h2>
+            <p>옛날 옛적, 마법과 모험이 가득한 세계에 GSIT이라는 특별한 친구들이 있었답니다. 그들은 서로 다른 배경과 성격을 가지고 있었지만, 마음만큼은 하나였기에 특별한 인연으로 엮여 있었습니다.
+                <br>그 시기의 GSIT은 마치 동화 속 마법사들이 함께 노는 것처럼 순수하고 따뜻했어요.
+                <br>
+                <br>주요 멤버는 김메이, 이모씨, 안산암, 김하늘, 그리고 얼양이였습니다.
+                <br>그들은 매일 새로운 모험을 계획하며 서로를 믿었고, 웃음이 끊이지 않았습니다. GSIT은 모든 순간이 행복했고, 
+                <br>그 행복은 마치 따사로운 햇살이 구름을 뚫고 내리쬐는 것처럼 그들 마음에 스며들었습니다.
+                <br>
+                <br>“우리가 함께라면 아무리 어려운 일이 와도 이겨낼 수 있어.”
+                <br>
+                <br>이처럼 그들은 서로의 손을 맞잡고 꿈꾸는 나날을 보냈습니다. 그들의 세상은 평화롭고, 아무런 걱정도 없었습니다.
+                <br>하지만... 그 행복한 날들은 마치 한 순간의 꿈처럼 서서히 사라지기 시작했습니다.                
+                </p>
+        </div>
+    </section>
+
+    <section class="page hidden" id="colonial">
+        <div class="background" style="background-image: url('https://example.com/image2.jpg');"></div>
+        <div>
+            <h2>초혼의 그림자</h2>
+            세상은 언제나 평화롭지 않았습니다. GSIT은 행복했지만, 그 행복은 마치 불안정한 새싹과 같았습니다. 초창기의 평화는 외부에서 일어난 어둠의 그림자에 의해 위협받기 시작했습니다.
+            <BR>어느 날, 초혼이라는 수상한 단체가 GSIT의 평화로운 세계를 찾아왔습니다. 초혼은 마치 어둠 속에서 미소를 띠며 접근했고, GSIT 멤버들의 마음을 교묘히 시험하기 시작했습니다.
+            <BR>초혼은 마치 독버섯처럼 GSIT 내부에 불안을 심어주었고, 그 불안은 서로를 의심하게 만들었습니다.
+            <BR>“이제 아무도 믿을 수 없어...”
+            <BR>이 모종의 불안은 GSIT 안에서 서서히 번지며, 서로의 마음을 갈라놓기 시작했습니다. 믿음이 깨지기 시작했고, 불안은 서로의 가슴을 괴롭혔습니다.
+            <BR>이제 GSIT은 한 번도 경험하지 못한 혼란 속으로 빠져들었습니다.
+        </div>
+    </section>
+
+    <section class="page hidden" id="prosper">
+        <div class="background" style="background-image: url('https://example.com/image3.jpg');"></div>
+        <div>
+            <h2>번영의 역설</h2>
+            <p>초혼의 혼란 속에서도, GSIT은 번영의 길을 찾았다. 이장군이라는 새로운 리더가 등장하며, 
+            외부적으로는 놀라운 성공을 이루었다. 김메이, 이모씨, 안산암, 소소한반, 고송이 등 새로운 멤버들은 함께 힘을 합쳐 
+            더 큰 성과를 이루어냈다. 그러나 그 번영의 그림자 속에는 초혼이 심어놓은 불행의 씨앗이 서서히 자라나고 있었다. 
+            겉보기에는 모두가 웃고 있었지만, 그 안에는 점점 더 깊은 불안을 품고 있었다.</p>
+        </div>
+    </section>
+
+    <section class="page hidden" id="collapse">
+        <div class="background" style="background-image: url('https://example.com/image4.jpg');"></div>
+        <div>
+            <h2>무너진 탑</h2>
+            <p>그러던 어느 날, 모든 것이 무너져 내리기 시작했다. 이장군의 독단과 안산암의 변화로 인해, 
+            그들이 쌓아올린 탑은 한순간에 허물어졌다. 손팍이라는 외부 세력도 그 혼란에 불을 붙였고, 
+            멤버들은 서로를 믿지 못한 채 갈등과 불신 속에서 헤매기 시작했다. 
+            "우리는 무엇을 위해 싸워왔던 것인가?"라는 질문만이 그들의 마음을 무겁게 짓눌렀다.</p>
+        </div>
+    </section>
+
+    <section class="page hidden" id="combine">
+        <div class="background" style="background-image: url('https://example.com/image5.jpg');"></div>
+        <div>
+            <h2>폐허에서 피어난 화합의 꽃</h2>
+            <p>무너진 폐허 속에서도 새로운 희망은 솟아났다. ATEN이라는 새로운 모임이 시작되며, 
+            김메이, 이모씨, 안산암, 소소한반, Apo 등은 다시 한번 서로를 믿고 손을 맞잡았다. 
+            Apo의 마인크리에이트 서버는 그들에게 새로운 가능성을 열어주었고, 함께하는 시간은 그들의 마음을 하나로 묶어주었다. 
+            그들의 눈앞에는 무한한 가능성이 펼쳐져 있었다.</p>
+        </div>
+    </section>
+
+    <section class="page hidden" id="encroach">
+        <div class="background" style="background-image: url('https://example.com/image6.jpg');"></div>
+        <div>
+            <h2>소멸의 서곡</h2>
+            <p>하지만 모든 것에는 끝이 다가오는 법. 이모씨의 새로운 개발 프로젝트는 
+            점차 멤버들 사이의 갈등을 야기하기 시작했다. 아포는 이모씨의 비교와 비난 속에서 점점 더 지쳐갔고, 
+            그들의 관계는 서서히 무너져갔다. "우리는 이곳에서 무엇을 추구해야 하는가?"라는 질문이 그들 사이를 맴돌았다.</p>
+        </div>
+    </section>
+
+    <section class="page hidden" id="fading">
+        <div class="background" style="background-image: url('https://example.com/image7.jpg');"></div>
+        <div>
+            <h2>끝없는 수평선</h2>
+            <p>현재의 그들은 침묵 속에서 새로운 길을 모색하고 있다. MCX의 실패에도 불구하고, 
+            김메이와 이바노프, 안산암, 소소한반은 여전히 희망의 끈을 놓지 않고 있다. 
+            "우리는 끝이 아닌, 새로운 시작을 맞이할 것이다."라는 믿음이 그들을 앞으로 나아가게 한다. 
+            하지만 그 길이 어디로 이어질지는 아무도 알 수 없었다.</p>
+        </div>
+    </section>
+</div>
+
+<script>
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            } else {
+                entry.target.classList.remove('visible');
+            }
+        });
+    });
+
+    document.querySelectorAll('.page').forEach(page => {
+        observer.observe(page);
+    });
+</script>
+
+</body>
+</html>

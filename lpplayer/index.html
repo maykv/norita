@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        /* 기존 스타일은 유지하고 이전 버튼 스타일만 추가 */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .back-button.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 기존 스타일 */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1a1a1a;
+            color: white;
+            font-family: 'Pretendard-Regular', sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #lpSelector {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 2rem;
+            transition: transform 1s ease;
+            background: #1a1a1a;
+            z-index: 100;
+        }
+
+        #lpSelector.hide {
+            transform: translateY(-100%);
+        }
+
+        #lpSelector.show {
+            transform: translateY(0);
+        }
+
+        .lp-container {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 2rem;
+            width: 100%;
+        }
+
+        .lp-cover {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .lp-cover:hover {
+            transform: scale(1.05);
+        }
+
+        .lp-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .lp-cover .title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            padding: 1rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .lp-cover:hover .title {
+            opacity: 1;
+        }
+
+        #lpPlayer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        #lpPlayer.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .record-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        .record {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #333;
+            overflow: hidden;
+            cursor: pointer;
+            transform: rotate(0deg);
+        }
+
+        .record img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .record-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .sliding-sound {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.8);
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sliding-sound.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 이전 버튼 추가 -->
+    <button class="back-button hidden">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        돌아가기
+    </button>
+
+    <div id="lpSelector">
+        <div class="lp-container">
+            <div class="lp-cover" data-title="SEOULITE">
+                <img src="https://image.bugsm.co.kr/album/images/500/200317/20031751.jpg" alt="Classic Jazz">
+                <div class="title">SEOULITE</div>
+            </div>
+            <div class="lp-cover" data-title="2ne1">
+                <img src="https://image.bugsm.co.kr/album/images/500/2912/291231.jpg" alt="90s Rock">
+                <div class="title">전설의 2NE1</div>
+            </div>
+            <div class="lp-cover" data-title="K-Pop Hits">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_mRSCt8mYFr9olvOYk1rcRL_srTjRyPkiGA&s" alt="K-Pop Hits">
+                <div class="title">알고보면 발라드 명가 YG 모음</div>
+            </div>
+            <div class="lp-cover" data-title="K-Pop Hits">
+                <img src="예나지금이나그대로.png" alt="K-Pop Hits">
+                <div class="title">★채-신★ ♧노동요모음집♧ ☏LPPLA</div>
+            </div>
+            <div class="lp-cover" data-title="K-Pop Hits">
+                <img src="/api/placeholder/300/300" alt="K-Pop Hits">
+                <div class="title">K-Pop Hits</div>
+            </div>
+            <div class="lp-cover" data-title="K-Pop Hits">
+                <img src="/api/placeholder/300/300" alt="K-Pop Hits">
+                <div class="title">K-Pop Hits</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lpPlayer">
+        <div class="record-container">
+            <div class="record">
+                <img src="" alt="Playing record">
+            </div>
+            <div class="record-center"></div>
+        </div>
+    </div>
+
+    <div class="sliding-sound">스스슥~</div>
+
+    <script>
+        const lpSelector = document.getElementById('lpSelector');
+        const lpPlayer = document.getElementById('lpPlayer');
+        const record = document.querySelector('.record');
+        const recordImg = record.querySelector('img');
+        const slidingSound = document.querySelector('.sliding-sound');
+        const backButton = document.querySelector('.back-button');
+        
+        let isPlaying = false;
+        let rotationAngle = 0;
+        let lastTimestamp = 0;
+        let animationFrameId = null;
+
+        function updateRotation(timestamp) {
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const deltaTime = timestamp - lastTimestamp;
+            
+            rotationAngle += (deltaTime * 120) / 1000;
+            record.style.transform = `rotate(${rotationAngle}deg)`;
+            
+            lastTimestamp = timestamp;
+            
+            if (isPlaying) {
+                animationFrameId = requestAnimationFrame(updateRotation);
+            }
+        }
+
+        // LP 선택 이벤트
+        document.querySelectorAll('.lp-cover').forEach(cover => {
+            cover.addEventListener('click', () => {
+                const imgSrc = cover.querySelector('img').src;
+                recordImg.src = imgSrc;
+                
+                slidingSound.classList.add('show');
+                setTimeout(() => {
+                    slidingSound.classList.remove('show');
+                }, 1000);
+
+                lpSelector.classList.add('hide');
+                backButton.classList.remove('hidden');
+
+                setTimeout(() => {
+                    lpPlayer.classList.add('show');
+                    isPlaying = true;
+                    requestAnimationFrame(updateRotation);
+                }, 1000);
+            });
+        });
+
+        // 이전 버튼 클릭 이벤트
+        backButton.addEventListener('click', () => {
+            // 애니메이션 정지
+            isPlaying = false;
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+
+            // LP 플레이어 숨기기
+            lpPlayer.classList.remove('show');
+            backButton.classList.add('hidden');
+
+            // 선택 화면 표시
+            setTimeout(() => {
+                lpSelector.classList.remove('hide');
+                // 회전 각도 초기화
+                rotationAngle = 0;
+                record.style.transform = `rotate(0deg)`;
+                lastTimestamp = 0;
+            }, 500);
+
+            // 슬라이딩 사운드 효과
+            slidingSound.classList.add('show');
+            setTimeout(() => {
+                slidingSound.classList.remove('show');
+            }, 1000);
+        });
+
+        // LP 재생/일시정지
+        record.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            
+            if (isPlaying) {
+                lastTimestamp = 0;
+                requestAnimationFrame(updateRotation);
+            } else {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+            }
+        });
+
+        // LP 호버 시 슬라이딩 사운드
+        document.querySelectorAll('.lp-cover').forEach(cover => {
+            cover.addEventListener('mouseenter', () => {
+                slidingSound.classList.add('show');
+                setTimeout(() => {
+                    slidingSound.classList.remove('show');
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

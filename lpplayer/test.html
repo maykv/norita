@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* 기존 스타일은 유지하고 새로운 스타일 추가 */
+        
+        /* 플레이리스트 컨트롤 스타일 */
+        .playlist-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            z-index: 1000;
+            width: 300px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .playlist-controls.show {
+            opacity: 1;
+        }
+
+        .now-playing {
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .song-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .control-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .control-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .control-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .playlist-toggle {
+            text-align: center;
+            cursor: pointer;
+            padding: 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .playlist {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .playlist.show {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .playlist-item {
+            padding: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            margin: 2px 0;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .playlist-item.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 기존 스타일들... (이전 코드와 동일) */
+
+    </style>
+</head>
+<body>
+    <!-- 이전 버튼 -->
+    <button class="back-button hidden">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        돌아가기
+    </button>
+
+    <!-- 플레이리스트 컨트롤 -->
+    <div class="playlist-controls">
+        <div class="now-playing">
+            <div>Now Playing</div>
+            <div class="song-title">-</div>
+        </div>
+        <div class="control-buttons">
+            <button class="control-button prev-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M19 20L9 12l10-8v16z"/>
+                    <line x1="5" y1="19" x2="5" y2="5"/>
+                </svg>
+            </button>
+            <button class="control-button next-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M5 4l10 8-10 8V4z"/>
+                    <line x1="19" y1="5" x2="19" y2="19"/>
+                </svg>
+            </button>
+        </div>
+        <div class="playlist-toggle">플레이리스트 ▼</div>
+        <div class="playlist">
+            <!-- 플레이리스트 항목들이 여기에 동적으로 추가됩니다 -->
+        </div>
+    </div>
+
+    <!-- 나머지 HTML 구조는 동일... -->
+
+    <script>
+        // 플레이리스트 데이터
+        const albums = {
+            "Classic Jazz": [
+                { title: "Take Five", duration: 10 },
+                { title: "So What", duration: 8 },
+                { title: "Blue in Green", duration: 12 }
+            ],
+            "90s Rock": [
+                { title: "Black", duration: 15 },
+                { title: "Wonderwall", duration: 10 },
+                { title: "Alive", duration: 12 }
+            ],
+            "K-Pop Hits": [
+                { title: "Dynamite", duration: 10 },
+                { title: "How You Like That", duration: 8 },
+                { title: "Boy With Luv", duration: 12 }
+            ]
+        };
+
+        let currentAlbum = null;
+        let currentTrackIndex = 0;
+        let trackTimer = null;
+
+        // 플레이리스트 토글
+        document.querySelector('.playlist-toggle').addEventListener('click', function() {
+            document.querySelector('.playlist').classList.toggle('show');
+            this.textContent = this.textContent.includes('▼') ? '플레이리스트 ▲' : '플레이리스트 ▼';
+        });
+
+        // 다음 곡 재생
+        function playNextTrack() {
+            if (!currentAlbum) return;
+            
+            currentTrackIndex = (currentTrackIndex + 1) % albums[currentAlbum].length;
+            playTrack(currentTrackIndex);
+        }
+
+        // 이전 곡 재생
+        function playPrevTrack() {
+            if (!currentAlbum) return;
+            
+            currentTrackIndex = (currentTrackIndex - 1 + albums[currentAlbum].length) % albums[currentAlbum].length;
+            playTrack(currentTrackIndex);
+        }
+
+        // 트랙 재생
+        function playTrack(index) {
+            if (!currentAlbum) return;
+
+            currentTrackIndex = index;
+            const track = albums[currentAlbum][currentTrackIndex];
+            
+            // 현재 재생 중인 곡 표시 업데이트
+            document.querySelector('.song-title').textContent = track.title;
+            
+            // 플레이리스트 항목 활성화 상태 업데이트
+            document.querySelectorAll('.playlist-item').forEach((item, idx) => {
+                item.classList.toggle('active', idx === currentTrackIndex);
+            });
+
+            // 이전 타이머 제거
+            if (trackTimer) clearTimeout(trackTimer);
+
+            // 곡 길이만큼 타이머 설정 (초 * 1000)
+            trackTimer = setTimeout(() => {
+                playNextTrack();
+            }, track.duration * 1000);
+        }
+
+        // 컨트롤 버튼 이벤트
+        document.querySelector('.prev-button').addEventListener('click', playPrevTrack);
+        document.querySelector('.next-button').addEventListener('click', playNextTrack);
+
+        // LP 선택 이벤트 수정
+        document.querySelectorAll('.lp-cover').forEach(cover => {
+            cover.addEventListener('click', () => {
+                const albumTitle = cover.getAttribute('data-title');
+                const imgSrc = cover.querySelector('img').src;
+                currentAlbum = albumTitle;
+                recordImg.src = imgSrc;
+                
+                // 플레이리스트 생성
+                const playlist = document.querySelector('.playlist');
+                playlist.innerHTML = albums[albumTitle].map((track, index) => `
+                    <div class="playlist-item" data-index="${index}">
+                        ${track.title}
+                    </div>
+                `).join('');
+
+                // 플레이리스트 항목 클릭 이벤트
+                playlist.querySelectorAll('.playlist-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const index = parseInt(item.getAttribute('data-index'));
+                        playTrack(index);
+                    });
+                });
+
+                // UI 표시
+                slidingSound.classList.add('show');
+                setTimeout(() => {
+                    slidingSound.classList.remove('show');
+                }, 1000);
+
+                lpSelector.classList.add('hide');
+                backButton.classList.remove('hidden');
+                document.querySelector('.playlist-controls').classList.add('show');
+
+                setTimeout(() => {
+                    lpPlayer.classList.add('show');
+                    isPlaying = true;
+                    requestAnimationFrame(updateRotation);
+                    // 첫 번째 트랙 재생 시작
+                    playTrack(0);
+                }, 1000);
+            });
+        });
+
+        // 이전 버튼 클릭 이벤트 수정
+        backButton.addEventListener('click', () => {
+            isPlaying = false;
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+
+            // 현재 재생 중인 트랙 타이머 제거
+            if (trackTimer) {
+                clearTimeout(trackTimer);
+            }
+
+            lpPlayer.classList.remove('show');
+            backButton.classList.add('hidden');
+            document.querySelector('.playlist-controls').classList.remove('show');
+
+            setTimeout(() => {
+                lpSelector.classList.remove('hide');
+                rotationAngle = 0;
+                record.style.transform = `rotate(0deg)`;
+                lastTimestamp = 0;
+                currentAlbum = null;
+                currentTrackIndex = 0;
+            }, 500);
+
+            slidingSound.classList.add('show');
+            setTimeout(() => {
+                slidingSound.classList.remove('show');
+            }, 1000);
+        });
+
+        // LP 재생/일시정지 이벤트 수정
+        record.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            
+            if (isPlaying) {
+                lastTimestamp = 0;
+                requestAnimationFrame(updateRotation);
+                if (trackTimer) {
+                    // 일시정지 했던 곡 다시 재생
+                    const track = albums[currentAlbum][currentTrackIndex];
+                    trackTimer = setTimeout(playNextTrack, track.duration * 1000);
+                }
+            } else {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+                if (trackTimer) {
+                    clearTimeout(trackTimer);
+                }
+            }
+        });
+
+        // 나머지 기존 코드는 유지...
+
+    </script>
+</body>
+</html>

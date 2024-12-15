@@ -1,0 +1,86 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* 전체 배경 스타일 */
+  .background {
+    background: linear-gradient(135deg, #b9d6ff, #84fab0);
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* 헤더 */
+  header {
+    padding: 20px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* 콘텐츠 컨테이너 */
+  .content-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px;
+    gap: 20px;
+  }
+  
+  /* 아티스트 카드 스타일 */
+  .artist-card,
+  .news-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.2),
+      -4px -4px 8px rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    width: 300px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  /* 카드 호버 효과 */
+  .artist-card:hover,
+  .news-card:hover {
+    transform: scale(1.1);
+  }
+  
+  /* 버튼 스타일 */
+  button {
+    margin-top: 15px;
+    padding: 8px 20px;
+    background-color: #84fab0;
+    border: none;
+    border-radius: 8px;
+    color: #333;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+  }
+  
+  button:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* 텍스트 스타일링 */
+  h2,
+  h3 {
+    margin: 5px 0;
+    color: #333;
+    text-align: center;
+  }
+  p {
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+    margin: 5px 0;
+  }
+  
