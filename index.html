@@ -1,84 +1,715 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>놀이터</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김메이 프로필</title>
+    <style>
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+        }
 
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f5f5f5;
-      color: #333;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard-Regular', sans-serif;
+        }
 
-    header {
-      background: #333;
-      color: white;
-      padding: 15px 10px;
-      text-align: center;
-      font-size: 24px;
-      border-bottom: 3px solid #ff6b6b;
-    }
+        body {
+            background: rgb(249, 255, 242);
+        }
 
-    nav {
-      margin: 10px 0;
-      text-align: center;
-    }
+        .inspiration-section h2 {
+            justify-content: center;
+            text-align: center;
+        }
 
-    nav a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #555;
-      font-size: 16px;
-      transition: color 0.3s ease;
-    }
+        .nav {
+            background: #deff91;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0 0 15px 15px;
+        }
 
-    nav a:hover {
-      color: #ff6b6b;
-    }
+        .logo {
+            font-size: 1.5rem;
+            color: #1e3600;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    .container {
-      padding: 20px;
-      text-align: center;
-    }
+        .nav-items {
+            display: flex;
+            gap: 2rem;
+        }
 
-    footer {
-      text-align: center;
-      padding: 10px 0;
-      margin-top: 20px;
-      background-color: #333;
-      color: white;
-      font-size: 14px;
-    }
-  </style>
+        .nav-items a {
+            color: #1e3600;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-items a:hover {
+            background: #99d971;
+            color: #f1ffde;
+        }
+
+        .profile-header {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            color: #1e3600;
+            margin-bottom: 1rem;
+        }
+
+        .profile-info {
+            font-size: 1.1rem;
+            color: #1e3600;
+            line-height: 1.6;
+        }
+
+        .content-section {
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: #deff91;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: #1e3600;
+        }
+
+        .gallery-section {
+            padding: 2rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            background: #deff91;
+            color: #1e3600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background: #99d971;
+            color: #f1ffde;
+        }
+
+        .filter-btn.active {
+            background: #99d971;
+            color: #f1ffde;
+        }
+
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s ease;
+        }
+
+        .gallery-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-info h3 {
+            color: #1e3600;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-info p {
+            color: #1e3600;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .inspiration-section {
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .inspiration-section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .inspiration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 2rem;
+        }
+
+        .inspiration-item {
+            text-align: center;
+        }
+
+        .inspiration-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .inspiration-item:hover .inspiration-image {
+            transform: scale(1.1);
+        }
+
+        .inspiration-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .inspiration-name {
+            color: #1e3600;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .inspiration-role {
+            color: #1e3600;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-link {
+            width: 30px;
+            height: 30px;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-link:hover {
+            transform: scale(1.2);
+        }
+
+        .social-link img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .filter-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .inspiration-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+
+            .inspiration-image {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .nav-items {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .profile-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    놀이터
-  </header>
+    <nav class="nav">
+        <a href="#" class="logo">김메이</a>
+        <div class="nav-items">
+            <a href="#about">프로필</a>
+            <a href="#works">작품</a>
+            <a href="#contact">연락처</a>
+            <a href="#blog">블로그</a>
+        </div>
+    </nav>
 
-  <nav>
-    <a href="./lpplayer/index.html">LP 플레이어</a>
-    <a href="./gsitfairytale/index.html">GSIT 동화</a>
-    <a href="./taeyeonletter/index.html">태연 - Letter to Myself</a>
-  </nav>
+    <div class="profile-header">
+        <div class="profile-image">
+            <img src="./images/profile/kimmay.jpg" alt="김메이 프로필">
+        </div>
+        <h1 class="profile-name">김메이</h1>
+        <div class="profile-info">
+            생년월일: 2010.05.10<br>
+            출생지: 부산광역시 사하구<br>
+        </div>
+    </div>
+    </div>
+    <div class="content-section">
+        <div class="skills">
+            <span class="skill-tag">음악</span>
+            <span class="skill-tag">웹 디자인</span>
+            <span class="skill-tag">예술</span>
+            <span class="skill-tag">작곡</span>
+            <span class="skill-tag">믹싱</span>
+            <span class="skill-tag">영상</span>
+        </div>
+    </div>
+    <div class="social-links">
+        <a href="https://instagram.com/apdlk_official" class="social-link" target="_blank">
+            <img src="./images/icon/instagram.svg" alt="Instagram">
+        </a>
+        <a href="https://youtube.com/@mayk_official" class="social-link" target="_blank">
+            <img src="./images/icon/youtube.svg" alt="YouTube">
+        </a>
+        <a href="https://soundcloud.com/irz3sakvzyxw" class="social-link" target="_blank">
+            <img src="./images/icon/soundcloud.svg" alt="Twitter">
+        </a>
+        <a href="https://github.com/maykv" class="social-link" target="_blank">
+            <img src="./images/icon/github.svg" alt="GitHub">
+        </a>
+    </div>
+    <section class="gallery-section">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">전체</button>
+            <button class="filter-btn" data-filter="art">디지털 아트</button>
+            <button class="filter-btn" data-filter="fandom">덕질 페이지</button>
+            <button class="filter-btn" data-filter="web">웹 페이지</button>
+            <button class="filter-btn" data-filter="album">앨범</button>
+            <button class="filter-btn" data-filter="collab">참여 작업</button>
+        </div>
 
-  <div class="container">
-    <h1>낙서와 찌끄레기의 공간</h1>
-    <p>
-      여기서 내 낙서와 프로젝트를 감상하고, 창작물을 공유해보세요. 
-      원하는 링크를 클릭해보세요!
-    </p>
-  </div>
+        <div class="gallery-container show">
+            <!-- 디지털 아트 -->
+            <div class="gallery-item" data-category="art">
+                <a href="https://maykv.github.io/kuronecat/index.html">
+                    <img src="./images/digitalart/kuronecat.png" alt="쿠로네 캣">
+                    <div class="gallery-info">
+                        <h3>쿠로네 캣</h3>
+                        <p>2023 | 디지털 아트</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item" data-category="art">
+                <a href="https://maykv.github.io/sion.buy/index.html">
+                    <img src="./images/digitalart/sion.buy.png" alt="SION.BUY">
+                    <div class="gallery-info">
+                        <h3>SION.BUY</h3>
+                        <p>2024 | 디지털 아트</p>
+                    </div>
+                </a>
+            </div>
 
-  <footer>
-    © 2024 놀이터. All rights reserved.
-  </footer>
+            <!-- 덕질 페이지 -->
+            <div class="gallery-item" data-category="fandom">
+                <a href="https://maykv.github.io/lostandfound15thanniversary/">
+                    <img src="./images/fandom/lostandfound.png" alt="Lost and Found 15th">
+                    <div class="gallery-info">
+                        <h3>Lost and Found 15th</h3>
+                        <p>2023 | 덕질 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item" data-category="fandom">
+                <a href="https://maykv.github.io/moderntimes10th/index.html">
+                    <img src="./images/fandom/moderntimes.png" alt="Modern Times 10th">
+                    <div class="gallery-info">
+                        <h3>Modern Times 10th</h3>
+                        <p>2023 | 덕질 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item" data-category="fandom">
+                <a href="https://maykv.github.io/kkotgalpi10/">
+                    <img src="./images/fandom/kkotgalpi.png" alt="꽃갈피 10주년">
+                    <div class="gallery-info">
+                        <h3>꽃갈피 10주년</h3>
+                        <p>2024 | 덕질 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item" data-category="fandom">
+                <a href="https://maykv.github.io/2ne1fanpage/">
+                    <img src="./images/fandom/2ne1.png" alt="꽃갈피 10주년">
+                    <div class="gallery-info">
+                        <h3>2NE1 FAN PAGE - BLACKJACK</h3>
+                        <p>2024 | 덕질 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <!-- 웹 페이지 -->
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/2011applecopy/">
+                    <img src="./images/webpage/ios2011.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>2011 애플 사이트 카피</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <!-- 웹 페이지 -->
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/minecreate/">
+                    <img src="./images/webpage/mcc.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>MINECREATE</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <!-- 웹 페이지 -->
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/kyh0108/index.html">
+                    <img src="./images/webpage/kyh0108.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>김영환 페이지</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <!-- 웹 페이지 -->
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/mayslove/">
+                    <img src="./images/webpage/mayslove.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>mayslove</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <!-- 웹 페이지 -->
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/amuzabel/index.html">
+                    <img src="./images/webpage/amuzabel.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>AMUZABEL</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+            <!-- 웹 페이지 -->
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/amuzartist/">
+                    <img src="./images/webpage/amuzartist.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>AMUZ Artist</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/norita/lpplayer/">
+                    <img src="./images/webpage/lpplayer.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>LP 플레이리스트</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/amuzartist/">
+                    <img src="./images/webpage/gsittale.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>GSIT 동화</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/mentaltest/">
+                    <img src="./images/webpage/mentaltest.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>정신건강 자가진단 사이트</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="gallery-item" data-category="web">
+                <a href="https://maykv.github.io/norita/clicker.html">
+                    <img src="./images/webpage/clicker.png" alt="2011 애플 사이트 카피">
+                    <div class="gallery-info">
+                        <h3>우울 클리커</h3>
+                        <p>2024 | 웹 페이지</p>
+                    </div>
+                </a>
+            </div>    
+            
+            <!-- Add remaining web pages following same pattern -->
+
+            <!-- 앨범 -->
+            <div class="gallery-item" data-category="album">
+                <a href="https://www.youtube.com/playlist?list=PL2stOn00PYValuJL0pDjASm0kzAB8mA_1">
+                    <img src="./images/album/woonkost.jpg" alt="cosmopolitan">
+                    <div class="gallery-info">
+                        <h3>웅크 팬 OST</h3>
+                        <p>2023 | 비공식 OST</p>
+                </div>
+                </a>
+            </div>
+
+            <div class="gallery-item" data-category="album">
+                <a href="https://www.youtube.com/playlist?list=PL2stOn00PYVY4ENNwJvXCZGk-B-MpKlVL">
+                    <img src="./images/album/cosmopolitan.png" alt="cosmopolitan">
+                    <div class="gallery-info">
+                        <h3>cosmopolitan</h3>
+                        <p>2024 | 싱글</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item" data-category="album">
+                <a href="#album-page1">
+                    <img src="./images/album/page1.png" alt="Page 1">
+                    <div class="gallery-info">
+                        <h3>Page 1</h3>
+                        <p>2025 | 정규</p>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 참여 작업 -->
+            <div class="gallery-item" data-category="collab">
+                <a href="https://www.youtube.com/watch?v=OP2TMTSg5kk">
+                    <img src="./images/collab/lady.jpg" alt="LADY">
+                    <div class="gallery-info">
+                        <h3>LADY</h3>
+                        <p>2024 | 참여 작업</p>
+                    </div>
+                </a>
+            </div>
+            <div class="gallery-item" data-category="collab">
+                <a href="https://www.youtube.com/watch?v=JxkXWgfwFu4">
+                    <img src="./images/collab/pgf.jpg" alt="이쁜 내 여자친구">
+                    <div class="gallery-info">
+                        <h3>이쁜 내 여자친구</h3>
+                        <p>2024 | 참여 작업</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="inspiration-section">
+        <h2>영감을 받은 인물들</h2><br>
+        <div class="inspiration-grid">
+            <div class="inspiration-item">
+                <div class="inspiration-image">
+                    <img src="./images/profile/iu.jpg" alt="아이유">
+                </div>
+                <div class="inspiration-name">아이유</div>
+                <div class="inspiration-role">가수</div>
+            </div>
+            <div class="inspiration-item">
+                <div class="inspiration-image">
+                    <img src="./images/profile/nayujin.jpg" alt="나유진">
+                </div>
+                <div class="inspiration-name">나유진</div>
+                <div class="inspiration-role">웹툰 작가</div>
+            </div>
+            <div class="inspiration-item">
+                <div class="inspiration-image">
+                    <img src="./images/profile/joy.jpg" alt="아이유">
+                </div>
+                <div class="inspiration-name">조이</div>
+                <div class="inspiration-role">가수</div>
+            </div>
+            <div class="inspiration-item">
+                <div class="inspiration-image">
+                    <img src="./images/profile/sohee.jpg" alt="아이유">
+                </div>
+                <div class="inspiration-name">소희</div>
+                <div class="inspiration-role">가수</div>
+            </div>
+                <div class="inspiration-item">
+                    <div class="inspiration-image">
+                        <img src="./images/profile/blackskirt.png" alt="아이유">
+                    </div>
+                    <div class="inspiration-name">검정치마</div>
+                    <div class="inspiration-role">싱어송라이터</div>
+                </div>
+    
+                <div class="inspiration-item">
+                    <div class="inspiration-image">
+                        <img src="./images/profile/jonghyun.jpg" alt="나유진">
+                    </div>
+                    <div class="inspiration-name">종현</div>
+                    <div class="inspiration-role">싱어송라이터</div>
+                </div>
+                <div class="inspiration-item">
+                    <div class="inspiration-image">
+                        <img src="./images/profile/moongge.jpg" alt="아이유">
+                    </div>
+                    <div class="inspiration-name">뭉게</div>
+                    <div class="inspiration-role">일러스트레이터</div>
+                </div>
+                <div class="inspiration-item">
+                    <div class="inspiration-image">
+                        <img src="./images/profile/hyun.webp" alt="아이유">
+                    </div>
+                    <div class="inspiration-name">황현</div>
+                    <div class="inspiration-role">작곡가</div>
+                </div>
+                <!-- 추가 인물들 -->        
+                </div>
+    </section>
+
+    <script>
+        
+        // 필터 기능
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const galleryContainer = document.querySelector('.gallery-container');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+
+                galleryContainer.classList.remove('show');
+                
+                setTimeout(() => {
+                    galleryItems.forEach(item => {
+                        if (filter === 'all' || item.dataset.category === filter) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    galleryContainer.classList.add('show');
+                }, 100);
+            });
+        });
+
+
+        // Intersection Observer for inspiration section
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    }
+                });
+            },
+            {
+                threshold: 0.1
+            }
+        );
+
+        observer.observe(document.querySelector('.inspiration-section'));
+
+        // 초기 로드 시 갤러리 표시
+        window.addEventListener('load', () => {
+            galleryContainer.classList.add('show');
+        });
+    </script>
+    
 </body>
 </html>
