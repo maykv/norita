@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depression Clicker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #222;
+            color: #fff;
+        }
+
+        #game-container {
+            text-align: center;
+        }
+
+        button {
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #444;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #666;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            height: auto;
+        }
+
+        #click-count {
+            margin-top: 10px;
+            font-size: 1.5rem;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            z-index: 1000;
+        }
+
+        #popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            display: none;
+            color: white;
+            text-align: center;
+            z-index: 1100;
+        }
+
+        #console-message {
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .month-button {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .month-button:hover {
+            background-color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Depression Clicker</h1>
+        <p>Click the button to progress.</p>
+        <button id="clicker-button">Click Me</button>
+        <div id="message"></div>
+        <div id="click-count">Clicks: 0</div>
+        <div id="overlay">
+            <p>...우울증은 병입니다</p>
+            <button id="retry-button">다시하기</button>
+            <button id="continue-button">마저하기</button>
+        </div>
+        <div id="popup">
+            <p id="popup-content"></p>
+            <button id="close-popup">닫기</button>
+        </div>
+    </div>
+    <script>
+        let clickCount = 0;
+        const diaryEntries = [
+            "1월 1일<br>오늘은 새로운 한 해의 시작이다. 하지만 요즘 무기력에 사로잡혀 아무것도 손에 잡히지 않는다.",
+            "2월 14일<br>사람들이 웃고 떠드는 소리가 멀게 느껴진다. 나만 세상에서 멀어지는 기분이다.",
+            "4월 3일<br>봄꽃이 피었지만, 내 마음은 여전히 겨울 속에 갇혀 있다.",
+            "6월 21일<br>하루가 너무 길게 느껴진다. 잠에 들고 싶지 않다.",
+            "8월 15일<br>무더운 여름밤에도 마음은 서늘하다. 언제쯤 이 감정에서 벗어날 수 있을까?",
+            "10월 9일<br>조금씩 마음이 나아지는 것 같다. 책을 읽으며 작은 위로를 얻는다.",
+            "12월 31일<br>지난 한 해를 돌아보며 내가 견뎌낸 시간들에 감사한다. 내일은 새로운 시작이다.",
+            "다음 해 1월 1일<br>이제는 완전히 극복해야겠다고 다짐한다. 나는 나를 사랑하기로 했다."
+        ];
+
+        const clickerButton = document.getElementById('clicker-button');
+        const messageDiv = document.getElementById('message');
+        const clickCountDiv = document.getElementById('click-count');
+        const overlay = document.getElementById('overlay');
+        const retryButton = document.getElementById('retry-button');
+        const continueButton = document.getElementById('continue-button');
+        const popup = document.getElementById('popup');
+        const popupContent = document.getElementById('popup-content');
+        const closePopupButton = document.getElementById('close-popup');
+
+        const monthButtons = {};
+
+        clickerButton.addEventListener('click', () => {
+            clickCount++;
+            clickCountDiv.textContent = `Clicks: ${clickCount}`;
+
+            if (clickCount % 100 === 0 && clickCount <= 1300) {
+                const index = Math.floor(clickCount / 100) - 1;
+                if (index < diaryEntries.length) {
+                    popupContent.innerHTML = diaryEntries[index];
+                    popup.style.display = 'block';
+
+                    const month = `${Math.ceil(clickCount / 100)}월`;
+                    if (!monthButtons[month]) {
+                        const button = document.createElement('button');
+                        button.textContent = month;
+                        button.className = 'month-button';
+                        button.addEventListener('click', () => {
+                            alert(diaryEntries[index]);
+                        });
+                        document.body.appendChild(button);
+                        monthButtons[month] = button;
+                    }
+                }
+            }
+
+            if (clickCount === 1300) {
+                messageDiv.textContent = '';
+                overlay.style.display = 'flex';
+            }
+        });
+
+        closePopupButton.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
+        retryButton.addEventListener('click', () => {
+            clickCount = 0;
+            clickCountDiv.textContent = `Clicks: ${clickCount}`;
+            overlay.style.display = 'none';
+            messageDiv.textContent = '';
+            Object.values(monthButtons).forEach(button => button.remove());
+            monthButtons = {};
+        });
+
+        continueButton.addEventListener('click', () => {
+            overlay.style.display = 'none';
+        });
+
+        const consoleMessage = `... 우울한 세상 속에서 살아가는 것은 가끔 힘든 일이지만, 여러분은 혼자가 아닙니다. 무거운 감정들이 때로는 모든 것을 집어삼키는 것 같아도, 우리는 함께 나아갈 수 있어요. 기억하세요, 당신은 소중합니다. 당신의 감정도 소중합니다.`.repeat(6);
+        console.log(`%c${consoleMessage}`, 'background: linear-gradient(to right, #ff0000, #ff7f7f); -webkit-background-clip: text; color: transparent; font-size: 1.2rem;');
+    </script>
+</body>
+</html>
